@@ -1,0 +1,38 @@
+# API Contract for the Creator Interface
+
+type Asset {
+  id: ID!
+  filename: String!
+  status: AssetStatus!
+  thumbnailUrl: String
+  metadata: Metadata
+  createdAt: String!
+}
+
+type Metadata {
+  title: String
+  description: String
+  tags: [String!]
+  aiConfidenceScore: Float
+  suggestedPrice: Float
+}
+
+enum AssetStatus {
+  UPLOADING
+  PROCESSING
+  AI_ANALYSIS
+  READY
+  DISTRIBUTED
+  ERROR
+}
+
+type Query {
+  getAsset(id: ID!): Asset
+  listMyAssets(limit: Int, offset: Int): [Asset!]
+  searchAssets(query: String!): [Asset!]
+}
+
+type Mutation {
+  updateMetadata(id: ID!, title: String, tags: [String!]): Asset
+  pushToMarketplace(id: ID!, platforms: [String!]): Boolean
+}
