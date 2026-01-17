@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  # Main Database for Metadata
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: creatornexus_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password_change_me
+    ports:
+      - "5432:5432"
+
+  # Search Engine for High-Volume Asset Retrieval
+  opensearch:
+    image: opensearchproject/opensearch:latest
+    environment:
+      - cluster.name=nexus-cluster
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+    ports:
+      - "9200:9200"
+
+  # Task Queue for Asynchronous Processing
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  # Fast state management for Job tracking
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  # Asset Worker (Local Dev)
+  worker:
+    build: 
+      context: .
+      dockerfile: ./src/services/ingestion/Dockerfile
+    depends_on:
+      - postgres
+      - rabbitmq
+    env_file: .env.development
