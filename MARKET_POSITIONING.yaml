@@ -1,0 +1,18 @@
+brand: CreatorNexus AI
+positioning:
+  competitors:
+    - name: StockSubmitter
+      weakness: Legacy UI, Lack of deep AI integration
+    - name: Xpiks
+      weakness: Desktop-locked, limited predictive analytics
+  unique_selling_points:
+    - AI_Niche_Discovery: We don't just tag; we tell you what will sell.
+    - Autopilot_Distribution: Full cloud-based automation from import to sale.
+    - Unified_Wallet: Consolidated view of earnings across 10+ platforms.
+  target_audience:
+    primary: Professional Stock Photographers (High Volume)
+    secondary: Digital Illustrators & AI Artists
+    tertiary: Content Production Agencies
+  pricing_strategy: 
+    model: SaaS (Freemium + Tiered Subscription)
+    value_metric: Number of assets processed / Revenue generated
