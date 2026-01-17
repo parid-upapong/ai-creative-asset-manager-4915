@@ -1,0 +1,46 @@
+graph TD
+    subgraph Client_Layer
+        Web[Web Dashboard]
+        Mobile[Mobile App]
+        CLI[Desktop Uploader]
+    end
+
+    subgraph Ingestion_Layer
+        S3[AWS S3 Bucket - Raw Assets]
+        LambdaTrigger[S3 Event Trigger]
+        SQS_Main[Task Queue - SQS]
+    end
+
+    subgraph Processing_Layer
+        Worker[Asset Processing Worker - Go/Python]
+        Redis[(Task State - Redis)]
+        
+        subgraph AI_Orchestrator
+            VisionAI[Vision AI - Tagging]
+            LLM[LLM - SEO Metadata]
+            AutoColor[Auto-Correction Engine]
+        end
+    end
+
+    subgraph Storage_Layer
+        DB[(PostgreSQL - Metadata)]
+        Search[(OpenSearch - Asset Search)]
+        S3_Proc[AWS S3 - Processed Assets]
+    end
+
+    subgraph Distribution_Layer
+        DistWorker[Distribution Manager]
+        StockAPIs[Stock Market APIs/SFTP]
+    end
+
+    Client_Layer -->|Upload| S3
+    S3 --> LambdaTrigger
+    LambdaTrigger --> SQS_Main
+    SQS_Main --> Worker
+    Worker --> AI_Orchestrator
+    Worker --> Redis
+    Worker --> DB
+    Worker --> S3_Proc
+    DB --> Search
+    DistWorker --> S3_Proc
+    DistWorker --> StockAPIs
